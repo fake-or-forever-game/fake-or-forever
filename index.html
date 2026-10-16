@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f7d9f0">
+<title>Fake or Forever 💗</title>
+<style>
+:root{--pink:#ff69b4;--purple:#8b5cf6;--ink:#39264f;--soft:#fff5fc;--line:#f0d5f0}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:var(--ink);background:linear-gradient(145deg,#fff1f8,#f3eaff 60%,#fff8fc);min-height:100vh}
+.wrap{width:min(720px,100%);margin:auto;padding:20px 15px 40px}
+header{text-align:center;padding:18px 8px 12px}
+.logo{display:inline-grid;place-items:center;width:64px;height:64px;border-radius:22px;background:linear-gradient(135deg,var(--pink),var(--purple));color:white;font-size:30px;box-shadow:0 8px 22px #b97acb55}
+h1{font-size:clamp(2rem,8vw,3.1rem);line-height:1.05;margin:14px 0 8px;letter-spacing:-1.5px}
+h1 span{background:linear-gradient(90deg,#f04f9d,#8153e8);-webkit-background-clip:text;background-clip:text;color:transparent}
+.subtitle{margin:0 auto;color:#745f84;max-width:430px;line-height:1.5}
+.pills{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:18px 0}
+.pill{font-size:.8rem;background:#ffffffb8;border:1px solid var(--line);padding:7px 11px;border-radius:99px}
+.panel{background:#ffffffd9;border:1px solid #fff;box-shadow:0 14px 38px #8053a018;border-radius:25px;padding:20px}
+h2{font-size:1.25rem;margin:0 0 8px}
+.muted{color:#7a6988;line-height:1.5;font-size:.94rem}
+.modes{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0}
+.mode{border:1px solid var(--line);border-radius:18px;background:#fff9fe;padding:15px;text-align:left;color:var(--ink);cursor:pointer;min-height:125px}
+.mode strong{display:block;margin:7px 0 4px;font-size:1rem}
+.mode .emoji{font-size:25px}
+.mode small{color:#806c8e;line-height:1.4}
+.mode.selected{border:2px solid var(--purple);background:#f7f0ff}
+button{font:inherit}
+.primary{width:100%;border:0;border-radius:15px;padding:14px 18px;color:white;font-weight:750;background:linear-gradient(100deg,#f04f9d,#8754ed);box-shadow:0 8px 18px #b55cc533;cursor:pointer}
+.secondary{border:1px solid var(--line);border-radius:13px;background:white;padding:11px 14px;color:var(--ink);font-weight:650;cursor:pointer}
+.topline{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:16px}
+.progress{height:8px;border-radius:20px;background:#f1e5f5;overflow:hidden;margin:10px 0 18px}
+.bar{height:100%;width:0;background:linear-gradient(90deg,var(--pink),var(--purple));transition:width .2s}
+.question{font-size:1.28rem;font-weight:750;line-height:1.35;margin:14px 0 17px}
+.answers{display:grid;gap:10px}
+.answer{border:1px solid var(--line);background:#fffaff;border-radius:14px;padding:13px;text-align:left;color:var(--ink);cursor:pointer;line-height:1.35}
+.answer:hover,.answer:focus{border-color:var(--purple);background:#f7f0ff}
+.result{text-align:center}
+.result-emoji{font-size:54px;margin:8px}
+.score{font-size:2rem;font-weight:850;background:linear-gradient(90deg,#ef4e9c,#8351e8);color:transparent;background-clip:text}
+.hidden{display:none!important}
+footer{text-align:center;color:#8b7a98;font-size:.8rem;padding:18px 6px}
+@media(max-width:420px){.panel{padding:16px}.modes{gap:8px}.mode{padding:12px;min-height:135px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+<div class="logo">💗</div>
+<h1>Fake or <span>Forever?</span></h1>
+<p class="subtitle">A little friendship quiz for big bestie energy. Play for fun, share the smiles. ✨</p>
+<div class="pills"><span class="pill">💞 Friendship vibes</span><span class="pill">🎀 Pink + purple</span><span class="pill">📱 Mobile friendly</span></div>
+</header>
+<main>
+<section id="home" class="panel">
+<h2>Choose your game</h2>
+<p class="muted">These playful results are just for fun — a quiz can’t truly tell whether someone is a real or fake friend.</p>
+<div class="modes">
+<button class="mode selected" data-mode="vibes"><span class="emoji">🦋</span><strong>Friendship Vibes</strong><small>Answer 5 situations and get a fun vibe result.</small></button>
+<button class="mode" data-mode="bestie"><span class="emoji">👯</span><strong>Bestie Check</strong><small>See what kind of friendship energy you give.</small></button>
+</div>
+<button id="start" class="primary">Start the quiz ✨</button>
+</section>
+<section id="game" class="panel hidden" aria-live="polite">
+<div class="topline"><button id="quit" class="secondary">← Back</button><span id="count" class="muted">Question 1 of 5</span></div>
+<div class="progress"><div id="bar" class="bar"></div></div>
+<div id="qemoji" style="font-size:30px">💭</div>
+<div id="question" class="question"></div>
+<div id="answers" class="answers"></div>
+</section>
+<section id="result" class="panel result hidden" aria-live="polite">
+<div id="remoji" class="result-emoji">💖</div>
+<h2 id="rtitle">Your friendship vibe</h2>
+<div id="score" class="score"></div>
+<p id="rtext" class="muted"></p>
+<p class="muted">Remember: real friendship is about patterns over time — respect, honesty, kindness and boundaries.</p>
+<button id="again" class="primary">Play again 💗</button>
+<div style="height:10px"></div>
+<button id="share" class="secondary">Share result</button>
+<p id="shareNote" class="muted"></p>
+</section>
+</main>
+<footer>Made with 💗 for friendship. No logins, names, or personal details needed.</footer>
+</div>
+<script>
+const sets={
+vibes:[
+["Your friend has a great piece of news. You…","Celebrate with them 🎉","Say “nice” and quickly change the subject 😶","Ask how it went and listen 💬"],
+["You accidentally upset your friend. You…","Listen and apologise if needed 💗","Blame them for being sensitive 🙃","Talk it out calmly 🤝"],
+["Your friend says they need some time alone. You…","Respect their space 🌷","Keep pushing them to reply 📱","Check in later without pressure 💌"],
+["A rumour about your friend pops up. You…","Don’t spread it; ask them privately if needed 🛡️","Forward it to the group 👀","Avoid joining in and be kind 💜"],
+["You disagree with your friend. You…","Talk honestly and respectfully 💬","Try to embarrass them in front of others 😬","Agree to disagree sometimes 🌈"]
+],
+bestie:[
+["A friend is having a rough day. You…","Ask what support they want 💞","Tell everyone their private business 📣","Listen without judging 🫶"],
+["Your friend gets picked for something you wanted. You…","Congratulate them and handle your feelings kindly 🌟","Try to make them feel guilty 😕","Wish them well and keep working toward your goal 🌱"],
+["You need to cancel plans. You…","Tell them honestly and apologise for the change 📩","Make up a story and disappear 👻","Suggest another time if you can 📅"],
+["Your friend shares a secret. You…","Keep it private unless someone’s safety is at risk 🔐","Use it as a joke in public 😳","Ask before sharing anything personal 🌸"],
+["A disagreement happens. You…","Listen and explain your side calmly 🗣️","Give them the silent treatment to punish them 🧊","Take a break, then try to talk it through ☁️"]
+]};
+let mode="vibes",index=0,points=0,lastResult="";
+const $=id=>document.getElementById(id);
+document.querySelectorAll(".mode").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll(".mode").forEach(x=>x.classList.remove("selected"));b.classList.add("selected");mode=b.dataset.mode}));
+$("start").addEventListener("click",start);
+$("quit").addEventListener("click",()=>show("home"));
+$("again").addEventListener("click",start);
+$("share").addEventListener("click",async()=>{const text=`Fake or Forever? 💗 My result: ${lastResult}. Take the friendship quiz!`;try{if(navigator.share){await navigator.share({title:"Fake or Forever",text});}else if(navigator.clipboard){await navigator.clipboard.writeText(text);$("shareNote").textContent="Result text copied — paste it into your favourite app!";}else{$("shareNote").textContent=text;}}catch(e){$("shareNote").textContent=text;}});
+function show(id){["home","game","result"].forEach(x=>$(x).classList.toggle("hidden",x!==id))}
+function start(){index=0;points=0;$("shareNote").textContent="";show("game");render()}
+function render(){const qs=sets[mode];$("count").textContent=`Question ${index+1} of ${qs.length}`;$("bar").style.width=`${index/qs.length*100}%`;$("question").textContent=qs[index][0];$("qemoji").textContent=["💭","🌷","💌","🦋","✨"][index%5];const a=[{t:qs[index][1],p:2},{t:qs[index][2],p:0},{t:qs[index][3],p:2}];$("answers").innerHTML="";a.forEach((item,i)=>{const b=document.createElement("button");b.className="answer";b.textContent=item.t;b.addEventListener("click",()=>{points+=item.p;index++;if(index<qs.length)render();else finish()});$("answers").appendChild(b)})}
+function finish(){const pct=Math.round(points/10*100);let title,emoji,desc;if(pct>=80){title="Green-Flag Energy";emoji="💚";desc="Your answers show lots of kindness, honesty and respect. Keep showing up for people — and yourself, too."}else if(pct>=50){title="Growing Bestie";emoji="🌷";desc="You’ve got some lovely friendship habits. Keep practising listening, honest communication and healthy boundaries."}else{title="Friendship Glow-Up";emoji="✨";desc="Everyone can learn and grow. Try choosing patience, honesty and respect in tricky moments."}lastResult=`${title} (${pct}%)`;$("remoji").textContent=emoji;$("rtitle").textContent=title;$("score").textContent=`${pct}% kindness points`;$("rtext").textContent=desc;$("bar").style.width="100%";show("result")}
+</script>
+</body>
+</html>
